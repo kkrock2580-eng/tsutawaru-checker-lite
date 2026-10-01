@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>伝わる化チェッカー Lite | VELØ WORKS</title>
+<meta name="description" content="文章の長さ・改行・定型表現を無料で点検。入力文章はブラウザ内で処理する、登録不要の伝わる化チェッカー Lite。" />
+<meta name="referrer" content="no-referrer" />
+<style>
+:root{--bg:#0b0e12;--panel:#121720;--line:#263140;--text:#f5f7fa;--muted:#9eabb9;--cyan:#42e8e0;--good:#75e6a5;--warn:#ffd166;--bad:#ff6b6b;--ink:#0e1319}
+*{box-sizing:border-box}body{margin:0;background:linear-gradient(180deg,#080b0f,#0d1219);color:var(--text);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI","Hiragino Sans","Yu Gothic UI","Yu Gothic",Meiryo,sans-serif;line-height:1.7}
+.wrap{max-width:1120px;margin:auto;padding:32px 18px 56px}.brand{font-weight:800;letter-spacing:.16em;color:var(--cyan);font-size:13px}.hero{margin:8px 0 24px}.hero h1{font-size:clamp(30px,5vw,54px);line-height:1.15;margin:6px 0 10px;letter-spacing:-.04em}.hero p{color:var(--muted);margin:0;max-width:760px}.grid{display:grid;grid-template-columns:1.1fr .9fr;gap:18px}@media(max-width:860px){.grid{grid-template-columns:1fr}}
+.card{background:rgba(18,23,32,.92);border:1px solid var(--line);border-radius:18px;padding:18px;box-shadow:0 14px 50px rgba(0,0,0,.22)}label{display:block;font-size:13px;color:var(--muted);margin-bottom:8px}textarea{width:100%;min-height:420px;resize:vertical;border-radius:14px;border:1px solid #344253;background:#0b1017;color:var(--text);padding:16px;font:inherit;line-height:1.75;outline:none}textarea:focus{border-color:var(--cyan);box-shadow:0 0 0 3px rgba(66,232,224,.08)}
+.row{display:flex;gap:10px;flex-wrap:wrap;margin-top:12px}button{appearance:none;border:0;border-radius:12px;padding:12px 16px;font-weight:800;cursor:pointer}.primary{background:var(--cyan);color:var(--ink)}.secondary{background:#202a36;color:var(--text);border:1px solid #344253}.ghost{background:transparent;color:var(--muted);border:1px solid #344253}.note{font-size:12px;color:var(--muted);margin-top:10px}.scorebox{display:flex;align-items:center;gap:16px;margin-bottom:16px}.score{width:92px;height:92px;border-radius:50%;display:grid;place-items:center;background:conic-gradient(var(--cyan) 0deg,#263140 0);position:relative}.score:after{content:"";position:absolute;inset:8px;background:var(--panel);border-radius:50%}.score strong{position:relative;z-index:1;font-size:28px}.scoremeta h2{margin:0;font-size:22px}.scoremeta p{margin:2px 0 0;color:var(--muted);font-size:13px}.metrics{display:grid;grid-template-columns:1fr 1fr;gap:10px}.metric{border:1px solid var(--line);border-radius:13px;padding:12px;background:#0e141c}.metric b{display:block;font-size:18px}.metric span{font-size:12px;color:var(--muted)}.section{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}.section h3{font-size:15px;margin:0 0 8px}.chips{display:flex;gap:7px;flex-wrap:wrap}.chip{font-size:12px;padding:5px 9px;border-radius:999px;background:#1c2733;border:1px solid #334254}.issue{padding:10px 12px;border-radius:11px;background:#0e141c;border-left:3px solid var(--warn);margin:8px 0;font-size:13px}.issue.good{border-left-color:var(--good)}.issue.bad{border-left-color:var(--bad)}.resultText{white-space:pre-wrap;background:#0b1017;border:1px solid #344253;border-radius:12px;padding:14px;max-height:330px;overflow:auto;font-size:14px}.empty{color:var(--muted);font-size:14px}.footer{margin-top:28px;color:#718091;font-size:12px;text-align:center}.tag{color:var(--cyan)}
+.card{min-width:0}.score{flex-shrink:0}.resultText{overflow-wrap:anywhere}button:focus-visible,a:focus-visible{outline:3px solid var(--cyan);outline-offset:4px}a{color:var(--cyan)}.footer{color:var(--muted)}@media(max-width:480px){.wrap{padding:20px 12px 36px}.card{padding:14px}.hero h1{font-size:30px}textarea{min-height:300px}.scoremeta h2{font-size:18px}}
+</style>
+</head>
+<body><main class="wrap">
+<div class="brand">無料・登録不要 / v0.1</div>
+<section class="hero"><h1>AI文章「伝わる化」チェッカー <span class="tag">Lite</span></h1><p>文章を貼って、見直すきっかけを。文の長さ・改行・定型表現をルールで点検する無料の試作版です。AIが書いたかどうかを判定するツールではありません。</p></section>
+<div class="grid">
+<section class="card"><label for="input">チェックしたい文章</label><textarea id="input" aria-describedby="privacy status" placeholder="ここにnote記事、メール、SNS投稿、商品説明などを貼り付けてください。"></textarea><div class="row"><button class="primary" id="analyze">伝わる化チェック</button><button class="secondary" id="sample">サンプルを入れる</button><button class="ghost" id="clear">クリア</button></div><div class="note" id="privacy">入力文章はブラウザ内だけで処理し、外部送信・保存しません。利用回数の自動集計も行っていません。1回につき20,000文字まで。</div><p class="note" id="status" role="status" aria-live="polite"></p></section>
+<section class="card"><div id="empty" class="empty">文章を入力して「伝わる化チェック」を押してください。</div><div id="results" hidden tabindex="-1" aria-label="チェック結果">
+<div class="scorebox"><div class="score" id="scoreRing"><strong id="score">--</strong></div><div class="scoremeta"><h2 id="verdict">診断結果</h2><p id="summary"></p></div></div>
+<div class="metrics"><div class="metric"><b id="chars">0</b><span>文字数</span></div><div class="metric"><b id="breaks">0</b><span>改行数</span></div><div class="metric"><b id="sentences">0</b><span>文の数</span></div><div class="metric"><b id="avg">0</b><span>平均文長</span></div></div>
+<div class="note">スコアはこのツール独自の目安です。内容の正しさや実際の伝わりやすさを保証しません。</div><div class="section"><h3>本文の語句から見たテーマ候補</h3><div class="chips" id="audience"></div></div>
+<div class="section"><h3>気になったポイント</h3><div id="issues"></div></div>
+<div class="section"><h3>改行・空白を整えた候補</h3><div class="resultText" id="revised"></div><div class="row"><button class="secondary" id="copy">整形案をコピー</button></div><div class="note">本文の言葉は削除せず、改行・空白だけを整理します。箇条書き・見出し・コードのある段落はそのまま残します。元の文章と見比べて使ってください。</div></div>
+</div></section></div>
+<section class="card section"><h3>使ってみた感想を教えてください</h3><p>この記事から来た方は、note記事のコメント欄へ「用途／役立った点／困った点・ほしい機能」を一言お願いします。入力した文章を載せる必要はありません。</p><p class="note">例：メールで使った。長い文に気づけた。直す場所も表示してほしい。</p></section><div class="footer">Prototype v0.1 — Powered by VELØ WORKS</div>
+</main>
+<script>
+const $=id=>document.getElementById(id);
+const aiPhrases=["重要なのは","ここで重要なのは","結論から言うと","〜と言えるでしょう","と言えるでしょう","いかがでしたか","ぜひ参考にしてみてください","一方で","つまり、","具体的には、","このように、","まずは","次に、","最後に、"];
+const vague=["様々","いろいろ","しっかり","適切に","効果的に","より良い","大切","重要","必要です","可能性があります"];
+const jargon=["VELØ","Auditor","Experiment","KPI","CTR","CVR","Entry","Response","Action","Gate","Ledger"];
+function sentences(t){return t.replace(/\n+/g,' ').split(/(?<=[。！？!?])/).map(s=>s.trim()).filter(Boolean)}
+function paragraphs(t){return t.split(/\n\s*\n|\n/).map(s=>s.trim()).filter(Boolean)}
+function countMatches(t,arr){
+  const spans=[];
+  for(const phrase of [...new Set(arr)].sort((a,b)=>b.length-a.length)){
+    let start=0, at;
+    while((at=t.indexOf(phrase,start))!==-1){
+      const end=at+phrase.length;
+      if(!spans.some(([a,b])=>at<b&&end>a))spans.push([at,end]);
+      start=end;
+    }
+  }
+  return spans.length;
+}
+function infer(t){let a=[]; if(/note|記事|読者|タイトル|サムネ/.test(t))a.push("note・記事を書く人"); if(/会社|社員|業務|仕事|顧客|社内/.test(t))a.push("仕事で文章を書く人"); if(/商品|購入|販売|価格|売上/.test(t))a.push("商品を売りたい人"); if(/AI|ChatGPT|生成AI/.test(t))a.push("AIを使って文章を書く人"); if(!a.length)a.push("登録したテーマ語との一致なし"); return [...new Set(a)].slice(0,3)}
+function revise(t){
+  // Only whitespace changes. Preserve structural blocks and existing paragraphs.
+  const normalized=t.replace(/\r\n?/g,'\n');
+  if(/^\s*(?:```|~~~)/m.test(normalized))return normalized.trim();
+  return normalized.split(/\n[ \t]*\n/).map(block=>{
+    const lines=block.split('\n');
+    if(lines.some(line=>/^(?:\s*(?:#{1,6}\s|[-*+・●■▶→]|\d+[.．、)]|>|【|\||```|~~~)| {4}|\t)/.test(line)))return block;
+    let out='';
+    for(const line of lines){
+      const next=line.trim();
+      if(!next)continue;
+      const space=/[A-Za-z0-9]$/.test(out)&&/^[A-Za-z0-9]/.test(next)?' ':'';
+      out+=space+next;
+    }
+    return out;
+  }).join('\n\n').trim();
+}
+function analyze(){const t=$('input').value.trim(); if(!t){$('status').textContent='文章を入力してください。';$('input').focus();return} if([...t].length>20000){$('status').textContent='20,000文字以内に分けてチェックしてください。';$('results').hidden=true;$('empty').hidden=false;return} const ss=sentences(t), ps=paragraphs(t); const chars=[...t.replace(/\s/g,'')].length, br=(t.match(/\n/g)||[]).length, avg=ss.length?Math.round(chars/ss.length):chars; const short=ps.filter(p=>p.length<25).length; const ai=countMatches(t,aiPhrases), vg=countMatches(t,vague), jg=countMatches(t,jargon); const duplicateBreak=Math.max(0, br-Math.ceil(chars/90)); let score=100; score-=Math.min(24,duplicateBreak*3); score-=Math.min(18,ai*4); score-=Math.min(12,vg*2); score-=Math.min(15,jg*2); if(avg>75)score-=12; if(avg<18&&ss.length>5)score-=8; if(ps.length&&short/ps.length>.6)score-=10; score=Math.max(25,Math.min(100,score));
+  $('score').textContent=score; $('scoreRing').style.background=`conic-gradient(var(--cyan) ${score*3.6}deg,#263140 0)`; $('chars').textContent=chars.toLocaleString(); $('breaks').textContent=br; $('sentences').textContent=ss.length; $('avg').textContent=avg+'字'; $('verdict').textContent=score>=85?'ルール上の指摘は少なめ':score>=70?'いくつか見直し候補あり':score>=55?'見直し候補が多め':'各ポイントを確認しましょう'; $('summary').textContent=`${chars.toLocaleString()}文字を、改行・文長・定型表現・固有語の観点でチェックしました。`;
+  $('audience').innerHTML=infer(t).map(x=>`<span class="chip">${x}</span>`).join(''); let issues=[];
+  if(duplicateBreak>1||ps.length&&short/ps.length>.6)issues.push(['bad',`改行が多めです。短い段落が連続すると、スマホで縦に長く見えます。2〜4文を1段落にまとめる候補があります。`]); else issues.push(['good','改行量は大きな問題ではなさそうです。']);
+  if(avg>75)issues.push(['bad',`1文が平均${avg}字です。長い文を分けると理解しやすくなります。`]); else if(avg<18&&ss.length>5)issues.push(['',`短文がかなり多めです。強調以外は文章をつなげると、テンポが落ち着きます。`]); else issues.push(['good',`平均文長は${avg}字で、極端な長短は見られません。`]);
+  if(ai)issues.push(['',`登録した定型表現の候補を${ai}件検出しました。AI執筆の証拠ではありません。文脈に合っているか確認してください。`]);
+  if(vg)issues.push(['',`「重要・様々・適切」など抽象的な語を${vg}件検出しました。数字や具体例に置き換えられる箇所がないか確認してください。`]);
+  if(jg)issues.push(['bad',`初見では説明が必要になりやすい固有語・略語を${jg}件検出しました。記事の入口では一般語を優先するのがおすすめです。`]);
+  if(!ai&&!vg&&!jg)issues.push(['good','登録した定型表現・抽象語・固有語との一致はありません。辞書にない表現は検出できません。']);
+  $('issues').innerHTML=issues.map(([c,m])=>`<div class="issue ${c}">${m}</div>`).join(''); $('revised').textContent=revise(t); $('empty').hidden=true; $('results').hidden=false; $('status').textContent='チェックが完了しました。結果を確認してください。'; $('results').focus(); }
+$('input').oninput=()=>{$('results').hidden=true;$('empty').hidden=false;$('status').textContent='';}; $('analyze').onclick=analyze; $('clear').onclick=()=>{$('input').value='';$('results').hidden=true;$('empty').hidden=false;$('status').textContent='';$('input').focus()}; $('sample').onclick=()=>{if($('input').value&&!confirm('入力中の文章をサンプルに置き換えますか？'))return;$('results').hidden=true;$('empty').hidden=false;$('status').textContent='サンプルを入れました。チェックを押してください。';$('input').value='VELØ Experiment #029\n\nここで重要なのは、VELØを使った記事は分かりにくい可能性があります。\n\nVELØの認知度が低い。\n\nつまり、\n\n読者はVELØを知っている前提の記事を読まされているのかもしれません。\n\nこの状況を改善するためには、様々な施策を適切に実行していくことが重要です。\n\nまずは無料Lite版を作ります。\n\n次に、結果を確認します。\n\n最後に、有料化の可能性を検証します。';}; $('copy').onclick=async()=>{
+  try{await navigator.clipboard.writeText($('revised').textContent);$('status').textContent='整形案をコピーしました。';}
+  catch{const range=document.createRange();range.selectNodeContents($('revised'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);$('status').textContent='自動コピーが使えません。選択した文章を手動でコピーしてください。';}
+};
+</script></body></html>
