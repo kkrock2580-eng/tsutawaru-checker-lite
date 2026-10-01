@@ -27,7 +27,7 @@
 <div class="section"><h3>気になったポイント</h3><div id="issues"></div></div>
 <div class="section"><h3>改行・空白を整えた候補</h3><div class="resultText" id="revised"></div><div class="row"><button class="secondary" id="copy">整形案をコピー</button></div><div class="note">本文の言葉は削除せず、改行・空白だけを整理します。箇条書き・見出し・コードのある段落はそのまま残します。元の文章と見比べて使ってください。</div></div>
 </div></section></div>
-<section class="card section"><h3>使ってみた感想を教えてください</h3><p>この記事から来た方は、note記事のコメント欄へ「用途／役立った点／困った点・ほしい機能」を一言お願いします。入力した文章を載せる必要はありません。</p><p class="note">例：メールで使った。長い文に気づけた。直す場所も表示してほしい。</p></section><div class="footer">Prototype v0.1 — Powered by VELØ WORKS</div>
+<section class="card section"><h3>使ってみた感想を教えてください</h3><p><a href="https://note.com/kkkrock271310/n/n1382792c4b20" target="_blank" rel="noopener noreferrer">note記事のコメント欄へ（感想・改善要望）</a>「用途／役立った点／困った点・ほしい機能」を一言お願いします。入力した文章を載せる必要はありません。</p><p class="note">例：メールで使った。長い文に気づけた。直す場所も表示してほしい。</p></section><div class="footer">Prototype v0.1 — Powered by VELØ WORKS</div>
 </main>
 <script>
 const $=id=>document.getElementById(id);
@@ -81,3 +81,4 @@ $('input').oninput=()=>{$('results').hidden=true;$('empty').hidden=false;$('stat
   catch{const range=document.createRange();range.selectNodeContents($('revised'));const selection=window.getSelection();selection.removeAllRanges();selection.addRange(range);$('status').textContent='自動コピーが使えません。選択した文章を手動でコピーしてください。';}
 };
 </script></body></html>
+
